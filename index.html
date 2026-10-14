@@ -1,0 +1,727 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Blog - Ciclos</title>
+    <meta name="description" content="MythOS: un blog sobre sistemas, ideas y la mitología de las máquinas.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="ventajas-desventajas.css">
+    <script>
+        // Oculta lo animable hasta que GSAP esté listo (evita parpadeos)
+        if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            document.documentElement.classList.add("will-animate");
+            setTimeout(() => document.documentElement.classList.remove("will-animate"), 3000);
+        }
+    </script>
+</head>
+
+<body>
+
+    <!-- Fondo de partículas (detrás de todo) -->
+    <canvas id="particles" class="bg-particles" aria-hidden="true"></canvas>
+
+    <!-- Contenedor oculto del traductor de Google (lo controla translate.js) -->
+    <div id="google_translate_element" hidden></div>
+
+    <!-- ============ NAVBAR ============ -->
+    <header class="nav" id="nav">
+        <!-- Pastilla izquierda: navegación principal -->
+        <nav class="pill pill--left" aria-label="Principal">
+            <a href="#posts">Ciclos de software</a>
+            <a href="#contacto">Autores</a>
+            <a href="#acerca">Acerca de</a>
+        </nav>
+
+        <!-- Pastilla central: logo -->
+        <a class="pill pill--logo" href="#top" aria-label="MythOS, inicio">
+            <svg class="logo-mark" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+                <g fill="currentColor">
+                    <rect x="1" y="11" width="3" height="3" />
+                    <rect x="5" y="7" width="3" height="3" />
+                    <rect x="9" y="3" width="3" height="3" />
+                    <rect x="13" y="7" width="3" height="3" />
+                    <rect x="9" y="11" width="3" height="3" />
+                </g>
+            </svg>
+            <span>Blog Ciclos</span>
+        </a>
+
+        <!-- Pastilla derecha: acciones -->
+        <div class="pill pill--right">
+            <button type="button" class="link-muted js-translate" translate="no">Translate</button>
+            <a href="comentarios.html" class="btn btn--dark btn--sm">Comentar</a>
+        </div>
+
+        <!-- Botón móvil -->
+        <button class="nav__toggle" id="navToggle" aria-expanded="false" aria-controls="navPanel"
+            aria-label="Abrir menú">
+            <span></span><span></span>
+        </button>
+    </header>
+
+    <!-- Panel móvil -->
+    <div class="nav__panel" id="navPanel" hidden>
+        <a href="#posts">Ciclos de software</a>
+        <a href="#contacto">Autores</a>
+        <a href="#acerca">Acerca</a>
+        <a href="#mapa">Mapa curricular</a>
+        <button type="button" class="nav__panel-btn js-translate" translate="no">Translate</button>
+        <a href="comentarios.html" class="btn btn--dark">Comentar</a>
+    </div>
+
+    <main id="top">
+        <!-- ============ HERO ============ -->
+        <section class="hero" id="acerca">
+            <div class="hero__copy">
+                <!-- Tarjeta translúcida: de "Bienvenidos" hasta la descripción -->
+                <article class="hero-card">
+                    <h1 class="title-2">Bienvenidos</h1>
+                    <h1 class="title-1">Acerca del blog</h1>
+                    <p>En este blog se hablara sobre los diferentes ciclos de vida de software, sus principales
+                        caracteristicas y las etapas que los conforman. Ademas, se explicara la importancia de cada
+                        uno de estos ciclos dentro del proceso de desarrollo de software, asi como su utilidad para
+                        organizar, planificar y llevar a cabo proyectos de manera eficiente</p>
+
+                    <div class="hero__cta">
+                        <a href="comentarios.html" class="btn btn--dark">Comentar</a>
+                        <a href="#mapa" class="btn btn--bracket">Mapa curricular</a>
+                    </div>
+                </article>
+            </div>
+            <figure class="hero__art reveal-img">
+                <img src="assets/hero.jpg" width="735" height="490" fetchpriority="high"
+                    alt="Personas leyendo y estudiando en una biblioteca luminosa con estantes de madera">
+            </figure>
+        </section>
+
+        <!-- ============ POSTS ============ -->
+        <section class="posts" id="posts">
+
+            <!-- Mitad izquierda: pestañas + texto + mapa curricular -->
+            <div class="posts__info">
+
+                <!-- Pastillas de pestañas (tabs.js) -->
+                <div class="tabs__list" role="tablist" aria-label="Información adicional">
+                    <button type="button" class="tab-pill is-active" role="tab" id="tab-main"
+                        aria-controls="panel-main" aria-selected="true">Ciclos del software</button>
+                    <button type="button" class="tab-pill" role="tab" id="tab-resp"
+                        aria-controls="panel-resp" aria-selected="false">Tabla responsabilidades</button>
+                    <button type="button" class="tab-pill" role="tab" id="tab-concl"
+                        aria-controls="panel-concl" aria-selected="false">Conclusiones</button>
+                    <button type="button" class="tab-pill" role="tab" id="tab-indiv"
+                        aria-controls="panel-indiv" aria-selected="false">Conclusiones individuales</button>
+                    <button type="button" class="tab-pill" role="tab" id="tab-t1"
+                        aria-controls="panel-t1" aria-selected="false">Objeto de aprendizaje</button>
+                    <button type="button" class="tab-pill" role="tab" id="tab-ciclos"
+                        aria-controls="panel-ciclos" aria-selected="false">Tabla de ciclos</button>
+                    <button type="button" class="tab-pill" role="tab" id="tab-ventajas"
+                        aria-controls="panel-ventajas" aria-selected="false">Ventajas y desventajas</button>
+                    <button type="button" class="tab-pill" role="tab" id="tab-areas"
+                        aria-controls="panel-areas" aria-selected="false">Áreas de desempeño</button>
+                    <button type="button" class="tab-pill" role="tab" id="tab-competencias"
+                        aria-controls="panel-competencias" aria-selected="false">Competencias de egreso</button>
+                </div>
+
+                <!-- Panel principal (contenido original) -->
+                <div class="tabs__panel" id="panel-main" role="tabpanel" aria-labelledby="tab-main">
+                    <h2 class="ISW">Ciclos del software</h2>
+                    <p>El ciclo de vida del software es el conjunto de etapas y procesos que se llevan a cabo para
+                        desarrollar, implementar, mantener y mejorar un sistema de software. Estas etapas permiten
+                        organizar de manera estructurada el desarrollo de un proyecto, desde la identificación de las
+                        necesidades y requisitos hasta su puesta en funcionamiento y mantenimiento.</p>
+
+                    <div class="mapa-block" id="mapa">
+                        <h3 class="mapa__title">Mapa Curricular</h3>
+                        <figure class="mapa">
+                            <a href="assets/ciclos.jpeg" target="_blank" rel="noopener" data-lightbox title="Ampliar el mapa curricular">
+                                <span class="mapa__media">
+                                    <img src="assets/ciclos.jpeg" alt="Mapa curricular de Ingeniería en Software 2023 del ITSON: ocho semestres con sus materias, bloques del programa, extracurriculares y requisitos de titulación" loading="lazy">
+                                </span>
+                            </a>
+                            <figcaption>Mapa curricular · Ingeniería en Software 2023 (clic para ampliar)</figcaption>
+                        </figure>
+                    </div>
+                </div>
+
+                <!-- Pestaña: Tabla responsabilidades -->
+                <div class="tabs__panel" id="panel-resp" role="tabpanel" aria-labelledby="tab-resp" hidden>
+                    <h3 class="tabs__title tabs__title--sm">Tablas comparativas de las responsabilidades de los roles</h3>
+                    <div class="tabs__table-wrap" tabindex="0" role="region" aria-label="Tabla de responsabilidades por rol (desliza para ver todas las columnas)">
+                        <table class="tabs__table tabs__table--roles">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Rol</th>
+                                    <th scope="col">Responsabilidad</th>
+                                    <th scope="col">Fábregas</th>
+                                    <th scope="col">Senn</th>
+                                    <th scope="col">Pressman</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Analista de sistemas</th>
+                                    <td>Identifica las necesidades del usuario, recopila requisitos y define qué debe hacer el sistema.</td>
+                                    <td>Requerimientos y análisis/diseño.</td>
+                                    <td>Investigación preliminar y determinación de requerimientos.</td>
+                                    <td>Comunicación y modelado.</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Diseñador de software</th>
+                                    <td>Define la arquitectura, estructura, componentes e interfaces del sistema.</td>
+                                    <td>Análisis y diseño.</td>
+                                    <td>Diseño del sistema.</td>
+                                    <td>Modelado.</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Desarrollador o programador</th>
+                                    <td>Escribe el código, implementa las funcionalidades y corrige errores de programación.</td>
+                                    <td>Construcción.</td>
+                                    <td>Desarrollo de software.</td>
+                                    <td>Construcción.</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Especialista de pruebas (QA)</th>
+                                    <td>Verifica que el software cumple los requisitos, identifica defectos y comprueba su funcionamiento.</td>
+                                    <td>Pruebas.</td>
+                                    <td>Prueba del sistema.</td>
+                                    <td>Construcción y actividades de aseguramiento de la calidad.</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Administrador de proyectos</th>
+                                    <td>Organiza actividades, asigna recursos, controla tiempos, costos y riesgos.</td>
+                                    <td>Planificación y seguimiento del proyecto.</td>
+                                    <td>Participa en la planificación y coordinación.</td>
+                                    <td>Planificación y gestión del proceso.</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Responsable de implementación</th>
+                                    <td>Prepara la entrega, instala el sistema, facilita su puesta en marcha y apoya a los usuarios.</td>
+                                    <td>Producción y mantenimiento.</td>
+                                    <td>Implantación y evaluación.</td>
+                                    <td>Despliegue (deployment).</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Responsable de mantenimiento</th>
+                                    <td>Atiende fallas posteriores a la entrega, realiza actualizaciones y adapta el sistema a nuevas necesidades.</td>
+                                    <td>Producción y mantenimiento.</td>
+                                    <td>Mantenimiento posterior a la implantación, según el enfoque utilizado.</td>
+                                    <td>Despliegue, retroalimentación y evolución del software.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Pestaña: Conclusiones -->
+                <div class="tabs__panel" id="panel-concl" role="tabpanel" aria-labelledby="tab-concl" hidden>
+                    <h3 class="tabs__title">Conclusiones</h3>
+                    <div class="concl">
+                        <p>El ciclo de vida del software constituye una herramienta fundamental para comprender y organizar el proceso de ingeniería de software. Las propuestas de Fábregas, Senn y Pressman muestran que no existe una única manera de dividir este proceso, aunque sí existe una coincidencia sustancial en las actividades esenciales: comprender la necesidad, establecer requerimientos, diseñar una solución, construirla, verificarla y ponerla en operación.</p>
+                        <p>Fábregas presenta una estructura centrada en requerimientos, análisis y diseño, construcción, pruebas y producción/mantenimiento. Senn desarrolla una visión más detallada mediante investigación preliminar, requerimientos, diseño, desarrollo, pruebas e implantación y evaluación. Pressman, por su parte, plantea un marco de proceso más general basado en comunicación, planificación, modelado, construcción y despliegue, complementado por actividades transversales de gestión, calidad, configuración y riesgos.</p>
+                        <p>La comparación demuestra que las diferencias terminológicas entre autores no necesariamente representan contradicciones. En muchos casos, corresponden a diferentes niveles de abstracción y diferentes formas de organizar actividades relacionadas.</p>
+                        <p>En consecuencia, el verdadero valor del concepto de ciclo de vida no reside en memorizar una secuencia fija de etapas, sino en comprender cómo las actividades de ingeniería se relacionan, cómo se controlan y cómo pueden adaptarse a las características particulares de cada proyecto.</p>
+                        <p class="concl__final">Desde esta perspectiva, el ciclo de vida debe entenderse como una estructura flexible que permite administrar la complejidad del desarrollo de software y no como una secuencia inmutable de pasos.</p>
+                    </div>
+                </div>
+
+                <!-- Pestaña: Conclusiones individuales -->
+                <div class="tabs__panel" id="panel-indiv" role="tabpanel" aria-labelledby="tab-indiv" hidden>
+                    <h3 class="tabs__title">Conclusiones individuales</h3>
+                    <div class="indiv">
+
+                        <article class="indiv__card">
+                            <header>
+                                <span class="indiv__avatar" aria-hidden="true" translate="no">K</span>
+                                <div>
+                                    <h5 translate="no">Kevin Elí Bojorquez Valdés</h5>
+                                    <p class="indiv__q">¿Qué significó para mí ser desarrollador?</p>
+                                </div>
+                            </header>
+                            <p>Dentro de las actividades planteadas y realizadas en mi rol, el cual abarca el desarrollo del blog en términos generales, he tenido una experiencia plenamente buena con mi equipo de trabajo. Esto ha sido un aspecto fundamental durante la primera etapa y el desarrollo del proyecto, ya que mi rol depende en gran medida de la colaboración y el correcto funcionamiento de todos los integrantes para alcanzar los objetivos propuestos en la creación del mismo.</p>
+                            <p>A esto se suma el aprendizaje adquirido en el uso de las herramientas y tecnologías aplicadas a la integración del software del blog, su diseño se ha desarrollado de acuerdo con los criterios establecidos en las discusiones previas con el equipo, con los cuales me he sentido cómodo y conforme, lo que ha favorecido una experiencia de trabajo positiva y una mejor comprensión de las actividades necesarias para cumplir con los objetivos del proyecto.</p>
+                            <p>En conclusión, mi experiencia durante esta etapa temprana del proyecto ha sido considerablemente positiva, tanto por el trabajo en equipo como por los conocimientos adquiridos en el uso de herramientas y tecnologías para el desarrollo del blog, la comunicación y la colaboración entre los integrantes son y han sido importantes para organizar las actividades y continuar con los objetivos establecidos en un inicio. Asimismo, personalmente he logrado comprender mejor las responsabilidades de mi rol como su importancia de trabajar de manera coordinada para contribuir al desarrollo en buena forma del proyecto.</p>
+                        </article>
+
+                        <article class="indiv__card">
+                            <header>
+                                <span class="indiv__avatar" aria-hidden="true" translate="no">J</span>
+                                <div>
+                                    <h5 translate="no">Jose Emmanuel Aguilar Gutierrez</h5>
+                                    <p class="indiv__q">¿Qué significó para mí ser integrador?</p>
+                                </div>
+                            </header>
+                            <p>Para mí, ser integrador significó aprender a organizar las ideas y el trabajo de mis compañeros para que todo funcionara de manera correcta. Durante este proyecto, entendí que es importante mantener una buena comunicación con el equipo, escuchar las opiniones de los demás y asegurarnos de que cada parte del blog se relacione con las otras.</p>
+                            <p>También aprendí que la organización y la colaboración son necesarias para avanzar y cumplir con los objetivos del proyecto. En conclusión, esta experiencia me ayudó a comprender mejor la importancia del trabajo en equipo y la responsabilidad que tiene cada integrante para lograr un buen resultado.</p>
+                        </article>
+
+                        <article class="indiv__card">
+                            <header>
+                                <span class="indiv__avatar" aria-hidden="true" translate="no">Á</span>
+                                <div>
+                                    <h5 translate="no">Ángel Ivan Leyva Castro</h5>
+                                    <p class="indiv__q">¿Qué significó para mí ser integrador?</p>
+                                </div>
+                            </header>
+                            <p>Para mí, ser integrador significó colaborar con mis compañeros para unir las diferentes partes del proyecto y lograr que el blog funcionara como un conjunto. Aprendí que es importante mantener una buena comunicación, organizar las tareas y revisar que todo esté relacionado con lo que queremos lograr.</p>
+                            <p>Además, comprendí que el trabajo en equipo facilita las actividades y ayuda a encontrar soluciones cuando se presentan dificultades. En conclusión, esta experiencia me permitió aprender más sobre la integración de un proyecto y la importancia de colaborar con los demás para obtener un buen resultado.</p>
+                        </article>
+
+                        <article class="indiv__card">
+                            <header>
+                                <span class="indiv__avatar" aria-hidden="true" translate="no">J</span>
+                                <div>
+                                    <h5 translate="no">Jaciel Tadeo Reyes Sanchez</h5>
+                                    <p class="indiv__q">¿Qué significó para mí ser diseñador?</p>
+                                </div>
+                            </header>
+                            <p>Para mí significó aprender a expresar ideas de manera creativa y que diseñar no es solo hacer que algo se vea bonito sino pensar en cómo las personas lo van a utilizar y el cómo captar la atención del público destinado para así mejorar la experiencia del usuario.</p>
+                        </article>
+
+                        <article class="indiv__card">
+                            <header>
+                                <span class="indiv__avatar" aria-hidden="true" translate="no">E</span>
+                                <div>
+                                    <h5 translate="no">Enrique Misael Reyes Sanchez</h5>
+                                    <p class="indiv__q">¿Qué significó para mí ser analista?</p>
+                                </div>
+                            </header>
+                            <p>Para mí, ser analista significó una oportunidad para comprender mejor cómo se identifican las necesidades y los problemas antes de buscar una solución. A través de este proyecto, entendí que el trabajo de un analista no consiste únicamente en recopilar información, sino también en escuchar las ideas de los demás, hacer las preguntas adecuadas y organizar la información para tener una visión más clara de lo que se necesita realizar.</p>
+                            <p>También aprendí que la comunicación y el trabajo en equipo son fundamentales, ya que cada integrante puede aportar diferentes ideas y puntos de vista que ayudan a mejorar el resultado final. Esta experiencia me permitió conocer un poco más sobre la importancia del análisis dentro de la ingeniería en software y cómo una buena planeación puede evitar errores y facilitar las siguientes etapas del desarrollo de un proyecto.</p>
+                            <p>En conclusión, ser analista representó para mí un aprendizaje importante, porque me ayudó a desarrollar una forma más organizada de observar los problemas y pensar en posibles soluciones. Considero que esta experiencia es una buena base para mi formación como futuro ingeniero en software, ya que me permitió entender que, antes de comenzar a programar, es necesario comprender qué se quiere lograr y cómo se puede llegar a ese objetivo de la mejor manera posible.</p>
+                        </article>
+
+                        <article class="indiv__card">
+                            <header>
+                                <span class="indiv__avatar" aria-hidden="true" translate="no">S</span>
+                                <div>
+                                    <h5 translate="no">Susan Nicole Rios Beltran</h5>
+                                    <p class="indiv__q">¿Qué significó para mí ser diseñador?</p>
+                                </div>
+                            </header>
+                            <p>Para mí significó darle voz a las ideas, fusionar la creatividad con la originalidad, la estructura y la estética.</p>
+                            <p>Dando la oportunidad de consolidar una identidad de marca coherente, funcional y estratégica.</p>
+                        </article>
+
+                    </div>
+                </div>
+
+                <!-- Pestaña: Tabla 1 -->
+                <div class="tabs__panel" id="panel-t1" role="tabpanel" aria-labelledby="tab-t1" hidden>
+                    <h3 class="tabs__title">Tabla 1</h3>
+                    <p class="tabs__caption">Materias del programa según la etapa del ciclo de vida del software.</p>
+                    <div class="cycle-board" tabindex="0" role="group" aria-label="Materias por etapa del ciclo de vida (desliza para ver todas)">
+                            <section class="cycle-col cycle-col--blue" aria-labelledby="etapa-1">
+                                <header class="cycle-col__head">
+                                    <span class="cycle-col__num" aria-hidden="true">1</span>
+                                    <h4 id="etapa-1">Análisis</h4>
+                                </header>
+                                <ul class="cycle-col__list">
+                                    <li>Ingeniería de Software</li>
+                                    <li>Modelado de Procesos</li>
+                                    <li>Ingeniería de Requisitos</li>
+                                </ul>
+                            </section>
+                            <section class="cycle-col cycle-col--yellow cycle-col--wide" aria-labelledby="etapa-2">
+                                <header class="cycle-col__head">
+                                    <span class="cycle-col__num" aria-hidden="true">2</span>
+                                    <h4 id="etapa-2">Diseño</h4>
+                                </header>
+                                <ul class="cycle-col__list">
+                                    <li>Redes</li>
+                                    <li>Seguridad Informática</li>
+                                    <li>Diseño de Software</li>
+                                    <li>Bases de Datos</li>
+                                    <li>Arquitectura de Computadoras</li>
+                                    <li>Sistemas Operativos</li>
+                                    <li>Arquitecturas de Software</li>
+                                    <li>Arquitecturas Empresariales</li>
+                                    <li>Proyecto de Software Integrador</li>
+                                    <li class="is-alt">Diseño de Sistemas Interactivos</li>
+                                </ul>
+                            </section>
+                            <section class="cycle-col cycle-col--purple" aria-labelledby="etapa-3">
+                                <header class="cycle-col__head">
+                                    <span class="cycle-col__num" aria-hidden="true">3</span>
+                                    <h4 id="etapa-3">Codificación</h4>
+                                </header>
+                                <ul class="cycle-col__list">
+                                    <li>Programación I</li>
+                                    <li>Programación II</li>
+                                    <li>Programación III</li>
+                                    <li>Sistemas Distribuidos</li>
+                                    <li>Aplicaciones Móviles</li>
+                                    <li>Aplicaciones Web</li>
+                                    <li>Sistemas Empotrados</li>
+                                    <li>Estructuras de Datos</li>
+                                    <li class="is-alt">Bases de Datos Avanzadas</li>
+                                </ul>
+                            </section>
+                            <section class="cycle-col cycle-col--green" aria-labelledby="etapa-4">
+                                <header class="cycle-col__head">
+                                    <span class="cycle-col__num" aria-hidden="true">4</span>
+                                    <h4 id="etapa-4">Implementación</h4>
+                                </header>
+                                <ul class="cycle-col__list">
+                                    <li>Evaluación de Software</li>
+                                    <li>Tecnologías de Información para los Negocios</li>
+                                    <li>Administración de Proyectos de Software</li>
+                                    <li>Métodos Ágiles de Desarrollo</li>
+                                </ul>
+                            </section>
+                            <section class="cycle-col cycle-col--pink" aria-labelledby="etapa-5">
+                                <header class="cycle-col__head">
+                                    <span class="cycle-col__num" aria-hidden="true">5</span>
+                                    <h4 id="etapa-5">Mantenimiento</h4>
+                                </header>
+                                <ul class="cycle-col__list">
+                                    <li>Pruebas de Software</li>
+                                    <li>Administración de Proyectos</li>
+                                    <li>Calidad de Software</li>
+                                </ul>
+                            </section>
+                    </div>
+                </div>
+
+                <!-- Pestaña: Tabla de ciclos -->
+                <div class="tabs__panel" id="panel-ciclos" role="tabpanel" aria-labelledby="tab-ciclos" hidden>
+                    <h3 class="tabs__title tabs__title--sm">Comparación entre Fábregas, Senn y Pressman</h3>
+                    <div class="tabs__table-wrap" tabindex="0" role="region" aria-label="Comparación entre Fábregas, Senn y Pressman (desliza para ver todas las columnas)">
+                        <table class="tabs__table tabs__table--roles tabs__table--compare">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Aspecto</th>
+                                    <th scope="col">Fábregas</th>
+                                    <th scope="col">Senn</th>
+                                    <th scope="col">Pressman</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row" class="ic ic-gear">Punto de partida</th>
+                                    <td>Requerimientos</td>
+                                    <td>Investigación preliminar</td>
+                                    <td>Comunicación</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" class="ic ic-chart">Análisis</th>
+                                    <td>Integrado con diseño</td>
+                                    <td>Relacionado con requerimientos y diseño</td>
+                                    <td>Dentro del modelado</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" class="ic ic-layout">Diseño</th>
+                                    <td>Integrado con análisis</td>
+                                    <td>Fase independiente</td>
+                                    <td>Dentro del modelado</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" class="ic ic-code">Construcción</th>
+                                    <td>Construcción</td>
+                                    <td>Desarrollo del software</td>
+                                    <td>Construcción</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" class="ic ic-search">Pruebas</th>
+                                    <td>Fase independiente</td>
+                                    <td>Fase independiente</td>
+                                    <td>Integradas con construcción y otras actividades</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" class="ic ic-case">Puesta en operación</th>
+                                    <td>Producción</td>
+                                    <td>Implantación y evaluación</td>
+                                    <td>Despliegue</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" class="ic ic-wrench">Mantenimiento</th>
+                                    <td>Explícito</td>
+                                    <td>Vinculado con evaluación/evolución</td>
+                                    <td>Considerado dentro del proceso y soporte/evolución</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" class="ic ic-tree">Gestión transversal</th>
+                                    <td>Menos explícita en esta clasificación</td>
+                                    <td>Menos explícita</td>
+                                    <td>Muy explícita</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Pestaña: Ventajas y desventajas -->
+                <div class="tabs__panel" id="panel-ventajas" role="tabpanel" aria-labelledby="tab-ventajas" hidden>
+                    <h3 class="tabs__title">Ventajas y desventajas</h3>
+                    <div class="proscons proscons--stack">
+
+                        <section class="proscons__col proscons__col--pro" aria-labelledby="ventajas-h">
+                            <h4 id="ventajas-h">Ventajas del ciclo de vida del software</h4>
+                            <p class="proscons__lead">El principal valor de trabajar con un ciclo de vida es que permite estructurar una actividad inherentemente compleja.</p>
+                            <dl class="proscons__list">
+                                <div>
+                                    <dt>Organización</dt>
+                                    <dd>Permite dividir el desarrollo en actividades con objetivos concretos.</dd>
+                                </div>
+                                <div>
+                                    <dt>Trazabilidad</dt>
+                                    <dd>Los requerimientos pueden relacionarse con decisiones de diseño, componentes implementados y pruebas.</dd>
+                                </div>
+                                <div>
+                                    <dt>Gestión</dt>
+                                    <dd>Facilita estimar recursos, tiempos, responsabilidades y riesgos.</dd>
+                                </div>
+                                <div>
+                                    <dt>Control de calidad</dt>
+                                    <dd>Las revisiones y pruebas permiten detectar problemas durante diferentes momentos del desarrollo.</dd>
+                                </div>
+                                <div>
+                                    <dt>Comunicación</dt>
+                                    <dd>Una estructura común facilita que usuarios, analistas, diseñadores, programadores y administradores comprendan el estado del proyecto.</dd>
+                                </div>
+                                <div>
+                                    <dt>Mantenimiento y evolución</dt>
+                                    <dd>Documentar cómo se construyó el sistema facilita su modificación posterior.</dd>
+                                </div>
+                            </dl>
+                            <p class="proscons__note">En el caso de Pressman, estas ventajas se complementan mediante actividades transversales destinadas precisamente a controlar calidad, configuración, riesgos, medición y gestión del proyecto.</p>
+                        </section>
+
+                        <section class="proscons__col proscons__col--con" aria-labelledby="desventajas-h">
+                            <h4 id="desventajas-h">Desventajas y limitaciones</h4>
+                            <p class="proscons__lead">Un análisis académico del ciclo de vida también debe reconocer que estructurar el proceso no garantiza por sí mismo el éxito del proyecto.</p>
+                            <dl class="proscons__list">
+                                <div>
+                                    <dt>Riesgo de rigidez</dt>
+                                    <dd>Cuando las fases se interpretan como completamente secuenciales, los cambios posteriores pueden resultar costosos.</dd>
+                                </div>
+                                <div>
+                                    <dt>Requerimientos incompletos</dt>
+                                    <dd>Los usuarios no siempre pueden expresar desde el principio todas sus necesidades. Un sistema puede revelar nuevas necesidades una vez que comienza a utilizarse.</dd>
+                                </div>
+                                <div>
+                                    <dt>Costos de modificación</dt>
+                                    <dd>Cuanto más tarde se descubre un problema relacionado con requerimientos o diseño, mayor puede ser el impacto de corregirlo.</dd>
+                                </div>
+                                <div>
+                                    <dt>Burocratización</dt>
+                                    <dd>Un exceso de documentación, controles o procedimientos puede reducir la velocidad del desarrollo si no aporta valor proporcional.</dd>
+                                </div>
+                                <div>
+                                    <dt>Falsa percepción de linealidad</dt>
+                                    <dd>
+                                        <p>Esta es probablemente la limitación conceptual más importante. Un diagrama de fases puede dar la impresión de que el desarrollo ocurre de forma perfectamente ordenada:</p>
+                                        <p class="proscons__flow" translate="no" aria-label="A, B, C, D, E en secuencia">A → B → C → D → E</p>
+                                        <p>Sin embargo, los proyectos reales suelen requerir retroalimentación, iteraciones y modificaciones.</p>
+                                        <p>Pressman reconoce explícitamente diferentes formas de flujo del proceso —lineal, iterativa, evolutiva y paralela— y señala que los modelos secuenciales tienen dificultades frente a realidades como el cambio continuo y la evolución de los sistemas.</p>
+                                    </dd>
+                                </div>
+                            </dl>
+                        </section>
+
+                    </div>
+                </div>
+
+                <!-- Pestaña: Áreas de desempeño -->
+                <div class="tabs__panel" id="panel-areas" role="tabpanel" aria-labelledby="tab-areas" hidden>
+                    <h3 class="tabs__title">Áreas de desempeño</h3>
+                    <ul class="skills">
+                        <li class="skills__item">
+                            <h4>Desarrollo de software</h4>
+                            <p>Creación y mantenimiento de programas, sistemas empresariales, aplicaciones web y aplicaciones móviles.</p>
+                            <p class="skills__rel"><span>Puestos relacionados:</span> desarrollador de software, programador, desarrollador web y desarrollador móvil.</p>
+                        </li>
+                        <li class="skills__item">
+                            <h4>Bases de datos y gestión de información</h4>
+                            <p>Diseño de bases de datos, consultas, mantenimiento, organización de información y apoyo a los sistemas de una empresa.</p>
+                            <p class="skills__rel"><span>Puestos relacionados:</span> administrador de bases de datos y desarrollador de sistemas de información.</p>
+                        </li>
+                        <li class="skills__item">
+                            <h4>Pruebas y aseguramiento de la calidad</h4>
+                            <p>Verificación de programas, detección de errores, elaboración de pruebas y evaluación del cumplimiento de requisitos.</p>
+                            <p class="skills__rel"><span>Puestos relacionados:</span> analista de calidad de software, tester y especialista en automatización de pruebas.</p>
+                        </li>
+                        <li class="skills__item">
+                            <h4>Seguridad informática</h4>
+                            <p>Prevención de vulnerabilidades, revisión de riesgos y apoyo en la protección de sistemas, aplicaciones y datos.</p>
+                            <p class="skills__rel"><span>Puestos relacionados:</span> analista de seguridad informática y especialista en pruebas de seguridad, según la preparación adicional.</p>
+                        </li>
+                        <li class="skills__item">
+                            <h4>Análisis y arquitectura de software</h4>
+                            <p>Estudio de necesidades, definición de requisitos y diseño de la estructura de sistemas informáticos.</p>
+                            <p class="skills__rel"><span>Puestos relacionados:</span> analista de sistemas, analista de requisitos y, con experiencia, arquitecto de software.</p>
+                        </li>
+                        <li class="skills__item">
+                            <h4>Administración de proyectos tecnológicos</h4>
+                            <p>Organización de tareas, seguimiento de entregas, coordinación de equipos y aplicación de metodologías ágiles.</p>
+                            <p class="skills__rel"><span>Puestos relacionados:</span> coordinador de proyectos, Scrum Master o gerente de proyectos, dependiendo de la experiencia y preparación.</p>
+                        </li>
+                    </ul>
+
+                    <div class="skills-intro">
+                        <h4>Competencias de egreso y áreas de desempeño profesional</h4>
+                        <p>El egresado de Ingeniería en Software debe contar con los conocimientos y habilidades necesarios para analizar problemas, diseñar soluciones tecnológicas y desarrollar aplicaciones que respondan a las necesidades de los usuarios y las organizaciones. Entre sus principales competencias se encuentran la programación, el diseño y administración de bases de datos, el análisis de requisitos, las pruebas de software, la seguridad informática y la gestión de proyectos.</p>
+                        <p>Estas competencias permiten que el profesionista pueda desempeñarse en distintas áreas, como el desarrollo de software, la creación de aplicaciones web y móviles, la administración de información, el aseguramiento de la calidad y el análisis de sistemas. Asimismo, puede participar en proyectos tecnológicos, colaborar con equipos multidisciplinarios y contribuir al mejoramiento de los procesos de una organización mediante soluciones informáticas.</p>
+                        <p>En cuanto a las oportunidades laborales, un ingeniero en software puede trabajar en empresas de tecnología, instituciones públicas, organizaciones privadas, consultorías o emprender su propio negocio. Las funciones y los puestos a los que puede acceder dependen de su experiencia, especialización y preparación profesional.</p>
+                    </div>
+                </div>
+
+                <!-- Pestaña: Competencias de egreso -->
+                <div class="tabs__panel" id="panel-competencias" role="tabpanel" aria-labelledby="tab-competencias" hidden>
+                    <h3 class="tabs__title">Competencias de egreso</h3>
+                    <ul class="skills">
+                        <li class="skills__item">
+                            <h4>Desarrollo de soluciones de software</h4>
+                            <p>Analizar problemas y crear programas o aplicaciones mediante lenguajes de programación, algoritmos y herramientas de desarrollo.</p>
+                            <p class="skills__rel"><span>Materias relacionadas:</span> Programación, Análisis de algoritmos y Aplicaciones Web y Móviles.</p>
+                        </li>
+                        <li class="skills__item">
+                            <h4>Diseño y administración de base de datos</h4>
+                            <p>Organizar, almacenar, consultar y administrar información de manera estructurada para que los sistemas funcionen de forma debida.</p>
+                            <p class="skills__rel"><span>Materias relacionadas:</span> Estructura de datos, Bases de datos y Bases de datos avanzadas.</p>
+                        </li>
+                        <li class="skills__item">
+                            <h4>Seguridad y calidad del software</h4>
+                            <p>Identificar posibles fallos y riesgos, aplicar pruebas y contribuir a que las aplicaciones sean seguras, confiables y cumplan con los requisitos establecidos.</p>
+                            <p class="skills__rel"><span>Materias relacionadas:</span> Seguridad informática, Pruebas de software y Calidad de software.</p>
+                        </li>
+                        <li class="skills__item">
+                            <h4>Análisis y diseño de sistemas</h4>
+                            <p>Comprender las necesidades de los usuarios, definir requisitos y diseñar la estructura y el funcionamiento de una solución tecnológica antes de desarrollarla.</p>
+                            <p class="skills__rel"><span>Materias relacionadas:</span> Ingeniería de requisitos, Modelado de procesos y Arquitectura de software.</p>
+                        </li>
+                        <li class="skills__item">
+                            <h4>Gestión de proyectos de software</h4>
+                            <p>Planificar actividades, organizar recursos, dar seguimiento al desarrollo y colaborar con un equipo para cumplir los objetivos de un proyecto.</p>
+                            <p class="skills__rel"><span>Materias relacionadas:</span> Administración de proyectos, Métodos ágiles de desarrollo y Proyecto de software integrador.</p>
+                        </li>
+                        <li class="skills__item">
+                            <h4>Comunicación, colaboración y ética profesional</h4>
+                            <p>Trabajar con otros profesionales, comunicar ideas técnicas, comprender las necesidades de una organización y desarrollar soluciones con responsabilidad y honestidad.</p>
+                            <p class="skills__rel"><span>Materias relacionadas:</span> Formación general, Axiología para la profesión y Administración de proyectos.</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Mitad derecha: tarjetas en columna vertical con movimiento continuo (rail.js) -->
+            <div class="rail-cell">
+                <div class="rail" id="rail" aria-label="Etapas del ciclo de vida del software">
+                    <div class="rail__track" id="railTrack">
+
+                        <article class="rail-card">
+                            <div class="card__media" style="--pos: 20% 50%">
+                                <img src="assets/Pleneación.jpg" alt="">
+                            </div>
+                            <span class="card__tag">ETAPA 1</span>
+                            <h3><a href="#">Pleneación</a></h3>
+                            <p>Un resumen breve de dos líneas que invite a leer el artículo completo.</p>
+                            <time datetime="2026-10-13">Respecto todos ciclos</time>
+                        </article>
+
+                        <article class="rail-card">
+                            <div class="card__media" style="--pos: 55% 50%">
+                                <img src="assets/Analisis.jpg" alt="">
+                            </div>
+                            <span class="card__tag">ETAPA 2</span>
+                            <h3><a href="#">Analisis</a></h3>
+                            <p>Un resumen breve de dos líneas que invite a leer el artículo completo.</p>
+                            <time datetime="2026-10-06">Respecto todos ciclos</time>
+                        </article>
+
+                        <article class="rail-card">
+                            <div class="card__media" style="--pos: 90% 50%">
+                                <img src="assets/Diseño.jpg" alt="">
+                            </div>
+                            <span class="card__tag">ETAPA 3</span>
+                            <h3><a href="#">Diseño</a></h3>
+                            <p>Diseño</p>
+                            <time datetime="2026-09-29">Respecto todos ciclos</time>
+                        </article>
+
+                        <article class="rail-card">
+                            <div class="card__media" style="--pos: 90% 50%">
+                                <img src="assets/Implementación.jpg" alt="">
+                            </div>
+                            <span class="card__tag">ETAPA 4</span>
+                            <h3><a href="#">Implementación</a></h3>
+                            <p>Un resumen breve de dos líneas que invite a leer el artículo completo.</p>
+                            <time datetime="2026-09-29">Respecto todos ciclos</time>
+                        </article>
+
+                        <article class="rail-card">
+                            <div class="card__media" style="--pos: 90% 50%">
+                                <img src="assets/Pruebas.jpg" alt="">
+                            </div>
+                            <span class="card__tag">ETAPA 5</span>
+                            <h3><a href="#">Pruebas e integración</a></h3>
+                            <p>Un resumen breve de dos líneas que invite a leer el artículo completo.</p>
+                            <time datetime="2026-09-29">Respecto todos ciclos</time>
+                        </article>
+
+                        <article class="rail-card">
+                            <div class="card__media" style="--pos: 90% 50%">
+                                <img src="assets/Mantenimiento.jpg" alt="">
+                            </div>
+                            <span class="card__tag">ETAPA 5</span>
+                            <h3><a href="#">Mantenimiento</a></h3>
+                            <p>Un resumen breve de dos líneas que invite a leer el artículo completo.</p>
+                            <time datetime="2026-09-29">Respecto todos ciclos</time>
+                        </article>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ============ FOOTER / CONTACTO ============ -->
+    <footer class="footer" id="contacto">
+        <div class="footer__inner">
+            <div class="footer__info">
+                <p class="footer__lead">Para más información contáctanos</p>
+                <a class="footer__btn" href="mailto:mythos.isw@gmail.com?subject=Contacto%20MythOS">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <rect x="3" y="5" width="18" height="14" rx="2" />
+                        <path d="m3.5 7 8.5 6.5L20.5 7" />
+                    </svg>
+                    Enviar un correo
+                </a>
+                <a class="footer__mail" href="mailto:mythos.isw@gmail.com">mythos.isw@gmail.com</a>
+                <p class="footer__copy">© 2026 MythOS. Todos los derechos reservados.</p>
+            </div>
+
+            <span class="footer__divider" aria-hidden="true"></span>
+
+            <div class="footer__brand">
+                <span class="footer__circle">
+                    <img src="assets/Mythos.jpeg" alt="Logo de MythOS" width="100" height="100" loading="lazy">
+                </span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- GSAP 3.13+ (CustomEase, SplitText y ScrollTrigger son gratuitos) -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/CustomEase.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+
+    <script src="particles.js"></script>
+    <script src="animations.js"></script>
+    <script src="main.js"></script>
+    <script src="translate.js"></script>
+    <script src="lightbox.js"></script>
+    <script src="rail.js"></script>
+    <script src="reveal.js"></script>
+    <script src="tabs.js"></script>
+</body>
+
+</html>
