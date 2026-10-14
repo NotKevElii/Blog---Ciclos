@@ -6,7 +6,8 @@
 */
 (() => {
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (reduce || !window.gsap || !window.CustomEase) return;
+  const phone = window.matchMedia("(max-width: 860px)").matches;   // en teléfono las imágenes se ven directo
+  if (reduce || phone || !window.gsap || !window.CustomEase) return;
 
   gsap.registerPlugin(CustomEase);
   const easeOpen = CustomEase.create("mythos-open", "0.47, 0.00, 0.49, 1.00");

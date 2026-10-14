@@ -1,0 +1,197 @@
+/* ============ CAPA MÓVIL (≤ 860px) ============
+   Se carga DESPUÉS de styles.css / comentarios.css y solo corrige o aligera
+   lo necesario para teléfono. El diseño de escritorio no cambia.
+
+   Qué resuelve:
+   - Desbordes horizontales (el mapa curricular medía hasta 1060px).
+   - Rendimiento: backdrop-filter sobre superficies grandes + canvas animado
+     es lo más pesado en teléfonos; aquí se limita a la navbar.
+   - Riel animado → carrusel horizontal táctil (sin "scroll trap" ni bucle infinito).
+   - Pestañas en una sola tira deslizable (en vez de 9 pastillas apiladas).
+   - Inputs a 16px (iOS hace zoom al enfocar campos menores a 16px).
+   - Áreas seguras (notch / barra de gestos) y alturas dinámicas (dvh).
+*/
+
+/* ---------- Global (también escritorio, sin efecto visual) ---------- */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+.swipe-hint { display: none; }
+
+@media (max-width: 860px) {
+
+  :root {
+    /* sin blur, el cristal necesita algo más de cuerpo para leerse */
+    --glass: rgba(255, 255, 255, .55);
+  }
+
+  html { scroll-padding-top: 76px; }                 /* la navbar fija no tapa los anclajes */
+  body { overflow-x: hidden; }                       /* red de seguridad contra desbordes */
+  @supports (overflow: clip) { html, body { overflow-x: clip; } }
+
+  a, button, input, textarea, .tab-pill { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+
+  /* ---------- Rendimiento: blur solo donde es pequeño y fijo ---------- */
+  * {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+  .nav .pill, .nav__toggle, .nav__panel {
+    -webkit-backdrop-filter: blur(12px) saturate(1.2) !important;
+    backdrop-filter: blur(12px) saturate(1.2) !important;
+  }
+  .posts { background: rgba(238, 238, 233, .72); }
+  .posts__info { --m3-surface: rgba(255, 255, 255, .72); }
+  .rail-card, .composer { background: rgba(255, 255, 255, .7); }
+
+  /* ---------- Navbar y menú ---------- */
+  .nav {
+    inset: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) auto max(12px, env(safe-area-inset-left));
+  }
+  .nav__toggle { width: 44px; height: 44px; }
+  .nav__toggle span { left: 14px; right: 14px; }
+  .nav__toggle span:nth-child(1) { top: 18px; }
+  .nav__toggle span:nth-child(2) { top: 25px; }
+  .nav__panel {
+    top: calc(max(12px, env(safe-area-inset-top)) + 54px);
+    left: max(12px, env(safe-area-inset-left));
+    right: max(12px, env(safe-area-inset-right));
+    max-height: calc(100dvh - 90px - env(safe-area-inset-top));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background: rgba(255, 255, 255, .94);
+  }
+  .nav__panel a, .nav__panel-btn { min-height: 46px; display: flex; align-items: center; font-size: 16px; }
+  .nav__panel .btn { justify-content: center; }
+  .btn { min-height: 44px; }
+
+  /* Columnas únicas con minmax(0,1fr): con "1fr" a secas la columna crece hasta el
+     ancho de su contenido más ancho (tablas, tira de pestañas) y se sale de la pantalla */
+  .hero, .posts, .footer__inner { grid-template-columns: minmax(0, 1fr); }
+
+  /* ---------- Hero ---------- */
+  .hero { min-height: 0; padding: calc(84px + env(safe-area-inset-top)) var(--gutter) 40px; }
+  .hero__art img { height: 100%; }                   /* sin el 120% pensado para la animación */
+  .hero__cta .btn { flex: 1 1 140px; }
+
+  /* ---------- Bloque principal ---------- */
+  .posts { padding: 44px var(--gutter) 52px; gap: 36px; }
+  .tabs__title { font-size: clamp(28px, 8vw, 36px); margin-bottom: 18px; }
+  .tabs__title--sm { font-size: clamp(22px, 6.4vw, 28px); }
+  .posts h2 { font-size: clamp(30px, 9vw, 40px); }
+
+  /* Pestañas: una sola tira deslizable */
+  .tabs__list {
+    display: flex; flex-wrap: nowrap;
+    width: 100%; max-width: 100%;
+    margin-bottom: 22px;
+    overflow-x: auto;
+    border-radius: 999px;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  .tabs__list::-webkit-scrollbar { display: none; }
+  .tab-pill {
+    flex: none; white-space: nowrap;
+    min-height: 40px; padding: 10px 16px;
+    scroll-snap-align: center;
+  }
+
+  /* Mapa curricular: antes medía hasta 1060px y desbordaba la página */
+  .mapa { width: 100%; }
+  .mapa a { padding: 8px; }
+  .mapa-block { margin-top: 32px; }
+
+  /* Tablas y tablero: deslizamiento táctil contenido */
+  .tabs__table-wrap, .cycle-board {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+  }
+  .tabs__table-wrap { border-radius: 24px; padding: 8px 8px 12px; }
+  .cycle-board {                                      /* a sangre hasta el borde de la pantalla */
+    margin-inline: calc(var(--gutter) * -1);
+    padding-inline: var(--gutter);
+    scroll-padding-inline: var(--gutter);
+  }
+  .swipe-hint {
+    display: flex; align-items: center; gap: 6px;
+    margin: 0 0 8px; font-size: 12px; color: var(--ink-soft);
+  }
+
+  /* Textos largos más cómodos */
+  .concl, .skills-intro { padding: 20px 20px; border-radius: 26px 26px 26px 8px; }
+  .indiv__card, .skills__item, .proscons__col { padding-inline: 18px; }
+  .indiv__card { border-radius: 20px; }
+  .indiv__card:nth-child(odd) { border-radius: 20px; }
+
+  /* ---------- Riel → carrusel horizontal ---------- */
+  .rail-cell { min-height: 0; margin-inline: calc(var(--gutter) * -1); }
+  .rail, .rail.rail--static {
+    position: relative;
+    inset: auto; top: auto; bottom: auto; left: auto; right: auto;
+    width: 100%; margin: 0;
+    overflow: visible;
+    touch-action: auto;
+  }
+  .rail .swipe-hint, .rail-cell .swipe-hint { padding-inline: var(--gutter); }
+  .rail__track {
+    display: flex; gap: 14px;
+    padding: 4px var(--gutter) 20px;
+    overflow-x: auto; overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    transform: none !important;
+    will-change: auto;
+  }
+  .rail__track::-webkit-scrollbar { display: none; }
+  .rail__track > [aria-hidden="true"] { display: none; }   /* copias del bucle de escritorio */
+  .rail-card {
+    flex: 0 0 min(82%, 340px);
+    margin: 0;
+    scroll-snap-align: start;
+    opacity: 1 !important;
+    box-shadow: 0 6px 18px rgba(28, 25, 23, .10);
+  }
+
+  /* ---------- Visor ampliado ---------- */
+  .lightbox {
+    background: rgba(20, 18, 17, .94);
+    padding: calc(60px + env(safe-area-inset-top)) 12px 24px;
+    overscroll-behavior: contain;
+  }
+  .lightbox__img { max-height: calc(100dvh - 120px); }
+  .lightbox__close {
+    top: max(12px, env(safe-area-inset-top)); right: max(12px, env(safe-area-inset-right));
+    width: 44px; height: 44px;
+  }
+  .lightbox__hint { bottom: max(12px, env(safe-area-inset-bottom)); white-space: nowrap; }
+
+  /* ---------- Pie ---------- */
+  .footer { padding-bottom: calc(44px + env(safe-area-inset-bottom)); }
+  .footer__btn { min-height: 48px; }
+
+  /* ---------- Página de comentarios ---------- */
+  .page { padding: calc(92px + env(safe-area-inset-top)) var(--gutter) 64px; }
+  .page__head { margin-bottom: 28px; }
+  .composer { border-radius: 22px; }
+  /* 16px evita el zoom automático de iOS al enfocar el campo */
+  .composer__text, .composer__email, .composer__name { font-size: 16px; }
+  .composer__text, .composer__email, .composer__name {
+    -webkit-appearance: none; appearance: none; border-radius: 0;
+  }
+  .composer__text { min-height: 112px; }
+  .composer__hint { white-space: normal; flex-basis: 100%; padding-bottom: 8px; }
+  .send { width: 48px; height: 48px; }
+  .comment__del { opacity: 1; padding: 8px 12px; }
+}
+
+/* Teléfonos pequeños */
+@media (max-width: 380px) {
+  .tab-pill { padding-inline: 13px; font-size: 12.5px; }
+  .hero__cta .btn { flex-basis: 100%; }
+  .rail-card { flex-basis: 88%; }
+  .footer__circle { width: 64px; height: 64px; }
+}
