@@ -29,7 +29,9 @@
 
     const hint = document.createElement("div");
     hint.className = "lightbox__hint";
-    hint.textContent = "Clic en la imagen para acercar · Esc para cerrar";
+    hint.textContent = window.matchMedia("(hover: none)").matches
+      ? "Toca la imagen para acercar · ✕ para cerrar"
+      : "Clic en la imagen para acercar · Esc para cerrar";
 
     box.append(img, closeBtn, hint);
     document.body.appendChild(box);

@@ -12,6 +12,16 @@
   const panels = tabs.map((t) => document.getElementById(t.getAttribute("aria-controls")));
   let first = true;   // la carga inicial no se anima
 
+  // En teléfono la lista de pestañas se desliza: centra la activa dentro de la tira
+  function centerTab(tab) {
+    if (tablist.scrollWidth <= tablist.clientWidth + 1) return;
+    const t = tab.getBoundingClientRect();
+    const l = tablist.getBoundingClientRect();
+    const left = tablist.scrollLeft + (t.left - l.left) - (l.width - t.width) / 2;
+    const smooth = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    tablist.scrollTo({ left, behavior: smooth ? "smooth" : "auto" });
+  }
+
   function show(index) {
     tabs.forEach((t, i) => {
       const on = i === index;
@@ -26,6 +36,7 @@
     });
 
     if (!first) {
+      centerTab(tabs[index]);
       const target = panels[index];
       void target.offsetWidth;          // reinicia la animación
       target.classList.add("is-in");

@@ -3,9 +3,11 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#d9d9d3">
+    <meta name="color-scheme" content="light">
     <title>Blog - Ciclos</title>
-    <meta name="description" content="MythOS: un blog sobre sistemas, ideas y la mitología de las máquinas.">
+    <meta name="description" content="MythOS: un blog sobre ciclos de software">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -13,9 +15,11 @@
         rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="ventajas-desventajas.css">
+    <link rel="stylesheet" href="mobile.css">
     <script>
-        // Oculta lo animable hasta que GSAP esté listo (evita parpadeos)
-        if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        // Oculta lo animable hasta que GSAP esté listo (evita parpadeos).
+        // En teléfono (≤ 860px) no se usa GSAP, así que no se oculta nada.
+        if (!matchMedia("(prefers-reduced-motion: reduce)").matches && !matchMedia("(max-width: 860px)").matches) {
             document.documentElement.classList.add("will-animate");
             setTimeout(() => document.documentElement.classList.remove("will-animate"), 3000);
         }
@@ -617,7 +621,7 @@
 
                         <article class="rail-card">
                             <div class="card__media" style="--pos: 20% 50%">
-                                <img src="assets/Pleneación.jpg" alt="">
+                                <img src="assets/Pleneación.jpg" alt="" loading="lazy" decoding="async" width="440" height="275">
                             </div>
                             <span class="card__tag">ETAPA 1</span>
                             <h3><a href="#">Pleneación</a></h3>
@@ -627,7 +631,7 @@
 
                         <article class="rail-card">
                             <div class="card__media" style="--pos: 55% 50%">
-                                <img src="assets/Analisis.jpg" alt="">
+                                <img src="assets/Analisis.jpg" alt="" loading="lazy" decoding="async" width="440" height="275">
                             </div>
                             <span class="card__tag">ETAPA 2</span>
                             <h3><a href="#">Analisis</a></h3>
@@ -637,7 +641,7 @@
 
                         <article class="rail-card">
                             <div class="card__media" style="--pos: 90% 50%">
-                                <img src="assets/Diseño.jpg" alt="">
+                                <img src="assets/Diseño.jpg" alt="" loading="lazy" decoding="async" width="440" height="275">
                             </div>
                             <span class="card__tag">ETAPA 3</span>
                             <h3><a href="#">Diseño</a></h3>
@@ -647,7 +651,7 @@
 
                         <article class="rail-card">
                             <div class="card__media" style="--pos: 90% 50%">
-                                <img src="assets/Implementación.jpg" alt="">
+                                <img src="assets/Implementación.jpg" alt="" loading="lazy" decoding="async" width="440" height="275">
                             </div>
                             <span class="card__tag">ETAPA 4</span>
                             <h3><a href="#">Implementación</a></h3>
@@ -657,7 +661,7 @@
 
                         <article class="rail-card">
                             <div class="card__media" style="--pos: 90% 50%">
-                                <img src="assets/Pruebas.jpg" alt="">
+                                <img src="assets/Pruebas.jpg" alt="" loading="lazy" decoding="async" width="440" height="275">
                             </div>
                             <span class="card__tag">ETAPA 5</span>
                             <h3><a href="#">Pruebas e integración</a></h3>
@@ -667,7 +671,7 @@
 
                         <article class="rail-card">
                             <div class="card__media" style="--pos: 90% 50%">
-                                <img src="assets/Mantenimiento.jpg" alt="">
+                                <img src="assets/Mantenimiento.jpg" alt="" loading="lazy" decoding="async" width="440" height="275">
                             </div>
                             <span class="card__tag">ETAPA 5</span>
                             <h3><a href="#">Mantenimiento</a></h3>
@@ -708,11 +712,16 @@
         </div>
     </footer>
 
-    <!-- GSAP 3.13+ (CustomEase, SplitText y ScrollTrigger son gratuitos) -->
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/CustomEase.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+    <!-- GSAP 3.13+ (CustomEase, SplitText y ScrollTrigger son gratuitos).
+         Solo se descarga en pantallas grandes y sin "reducir movimiento":
+         en teléfono las animaciones GSAP están desactivadas (ver main.js). -->
+    <script>
+        if (!matchMedia("(max-width: 860px)").matches && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            ["gsap", "CustomEase", "ScrollTrigger", "SplitText"].forEach(function (n) {
+                document.write('<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/' + n + '.min.js"><\/script>');
+            });
+        }
+    </script>
 
     <script src="particles.js"></script>
     <script src="animations.js"></script>
@@ -722,6 +731,7 @@
     <script src="rail.js"></script>
     <script src="reveal.js"></script>
     <script src="tabs.js"></script>
+    <script src="mobile.js"></script>
 </body>
 
 </html>
